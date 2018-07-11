@@ -1,26 +1,44 @@
 #include <fstream>
-#include <sstream>
 #include "Picture.h"
 
-Picture::Picture() : data(""){
+bool Picture::getPictureFromFile(const std::string &s)
+{
+  std::ifstream ifs(s.c_str(), std::ios::in);
+  _data ="";
+  if (ifs.is_open())
+  {
+    char c;
+    while (ifs.get(c)){
+      _data += c;
+    }
+    ifs.close();
+    return true;
+  }
+  _data = "ERROR";
+  return false;
+}
+
+Picture::Picture(const std::string &fn)
+{
+  getPictureFromFile(fn);
+}
+
+Picture::Picture()
+{
+  _data = "";
+}
+
+Picture::~Picture(){
 
 }
 
-Picture::Picture(const std::string file)
+Picture::Picture(const Picture &a)
 {
-	getPictureFromFile(file);
+  _data = a._data;
 }
 
-bool Picture::getPictureFromFile(const std::string file)
+Picture &Picture::operator=(const Picture &a)
 {
-	std::ifstream fs(file);
-	if (!fs) 
-	{
-		data = "ERROR";
-		return (false);
-	}
-	std::ostringstream ss;
-	ss << fs.rdbuf();
-	data = ss.str();
-	return (true);
+  this->_data = a._data;
+  return *this;
 }

@@ -1,5 +1,5 @@
-#include "Woody.h"
+include "Woody.h"
 
-Woody::Woody(std::string name, std::string file) :Toy(Toy::WOODY, name, file){
-
+Woody::Woody(const std::string &n, const std::string &fn):Toy(Toy::WOODY, n, fn){
+	
 }

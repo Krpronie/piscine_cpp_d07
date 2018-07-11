@@ -1,44 +1,48 @@
-#include <fstream>
 #include "Picture.h"
-
-bool Picture::getPictureFromFile(const std::string &s)
-{
-  std::ifstream ifs(s.c_str(), std::ios::in);
-  _data ="";
-  if (ifs.is_open())
-  {
-    char c;
-    while (ifs.get(c)){
-      _data += c;
-    }
-    ifs.close();
-    return true;
-  }
-  _data = "ERROR";
-  return false;
-}
-
-Picture::Picture(const std::string &fn)
-{
-  getPictureFromFile(fn);
-}
 
 Picture::Picture()
 {
-  _data = "";
+  data = "";
 }
 
-Picture::~Picture(){
-
-}
-
-Picture::Picture(const Picture &a)
+Picture::Picture(const std::string &file)
 {
-  _data = a._data;
+  getPictureFromFile(file);
 }
 
-Picture &Picture::operator=(const Picture &a)
+Picture::Picture(const Picture &copy): data(copy.data){
+  
+}
+
+Picture &Picture::operator=(const Picture &copy)
 {
-  this->_data = a._data;
-  return *this;
+  if (this != &copy) 
+  {
+    data = copy.data;
+  }
+  return (*this);
+}
+
+Picture::~Picture()
+{
+}
+
+bool  Picture::getPictureFromFile(const std::string &file)
+{
+  std::ifstream ifs(file.c_str());
+  if (ifs.is_open()) 
+  {
+    getline (ifs, data, (char) ifs.eof());
+    return (true);
+  }
+  else 
+  {
+    data = "ERROR";
+    return (false);
+  }
+}
+
+std::string Picture::getData() const
+{
+  return (data);
 }

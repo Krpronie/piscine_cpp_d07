@@ -1,107 +1,61 @@
-#include "string.h"
 #include "Toy.h"
 
-Toy::Toy(){
+Toy::Toy() : type(BASIC_TOY), _name("toy"){
 
 }
 
-Toy::Toy(Toy::ToyType type, const std::string &name, const std::string &file)
-{
-  _type = type;
-  _name = name;
-  _picture = Picture(file);
+Toy::Toy(ToyType ToyType, std::string name, std::string file) : type(ToyType), _name(name), _picture(file){
+
 }
 
-Toy::ToyType Toy::getType() const 
-{
-  return _type;
-}
-std::string Toy::getName() const 
-{
-  return _name;
-}
-std::string Toy::getAscii() const 
-{
-  return _picture.getData();
+Toy::Toy(const Toy &copy) : type(copy.type), _name(copy._name), _picture(copy._picture){
+
 }
 
-bool Toy::setAscii(const std::string &file)
+Toy &Toy::operator=(const Toy &copy)
 {
-  if (_picture.getPictureFromFile(file))
+  if (this != &copy) 
   {
-    return true;
+    this->type = copy.type;
+    this->_name = copy._name;
+    this->_picture = copy._picture;
   }
-  e = "bad new illustration";
-  return false; 
-}
-void Toy::setName(const std::string &name)
-{
-  _name = name;
-}
-
-Toy	Toy::operator=(const Toy &a)
-{
-  this->_picture = a._picture;
-  this->_type = a._type;
-  this->_name = a._name;
   return (*this);
 }
 
-Toy::Toy(const Toy &a)
-{
-  this->_picture = a._picture;
-  this->_type = a._type;
-  this->_name = a._name;
+Toy::~Toy(){
+  
 }
 
-std::ostream &operator<<(std::ostream &f, const Toy &a)
+int Toy::getType() const
 {
-  f << a.getName() << std::endl << a.getAscii() << std::endl;
-  return f;
+  return (type);
 }
 
-void operator<<(Toy &a, const std::string &str)
+std::string Toy::getName() const
 {
-  a.setData(str);
+  return (_name);
 }
 
-Toy::Error Toy::getLastError()
+void Toy::setName(std::string name)
 {
-  Toy::Error s;
-  s._what = e;
+  _name = name;
+}
 
-  if (e == "bad new illustration")
+bool Toy::setAscii(std::string fileName)
+{
+  Picture Picture(fileName);
+
+  if (Picture.getData() == "")
+    return (false);
+  else 
   {
-    s._where = "setAscii";
-    s.type = Toy::Error::PICTURE;
+    _picture = Picture;
+    return (true);
   }
-
-  else if (e == "wrong mode")
-  {
-    s._where = "speak_es";
-    s.type = Toy::Error::SPEAK;
-  }
-
-  else
-  {
-    s._where = "speak_es";
-    s.type = Toy::Error::UNKNOWN;
-  }
-  return s;
 }
 
-void Toy::speak(const std::string &s)
+std::string Toy::getAscii() const
 {
-  std::cout << _name << " \"" <<  s << "\"" << std::endl;
+  return (this->_picture.getData());
 }
-
-bool Toy::speak_es(const std::string &s)
-{
-  (void) s;
-  return true;
-}
-
-void Toy::setData(std::string a)
-{
-  _picture.setData(a);
-};

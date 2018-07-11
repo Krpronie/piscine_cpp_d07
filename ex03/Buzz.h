@@ -9,7 +9,7 @@ class Buzz : public Toy
 public:
 	Buzz(const std::string &n, const std::string &fn = "buzz.txt");
 	~Buzz(){
-		
+
 	}
 	void speak(const std::string &s)
 	{
@@ -18,7 +18,8 @@ public:
 	virtual bool speak_es(const std::string &s)
 	{
 		std::cout << "BUZZ: " << _name << "senorita \"" <<  s << "\" senorita" << std::endl;
-		return true;
+    	return true;
 	};
 };
-#endif 
+
+#endif
